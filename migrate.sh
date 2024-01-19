@@ -14,7 +14,7 @@ Help(){
 All(){
 Dir
 for f in /$SOURCE/\@appstore/*
-do 
+do
 	pkg="${f##*/}"
 	echo $pkg
 	[ -e /var/packages/$pkg/scripts/start-stop-status ] && /var/packages/$pkg/scripts/start-stop-status stop &
@@ -37,7 +37,7 @@ done
 	mv /$SOURCE/\@appdata/* /$TARGET/\@appdata
 
 for f in /$TARGET/\@appstore/*
-do 
+do
 	pkg="${f##*/}"
 	echo $pkg
 	[ -e /$TARGET/\@appstore/$pkg ] && ln -sf /$TARGET/\@appstore/$pkg /var/packages/$pkg/target
@@ -52,7 +52,7 @@ exit 1
 Run(){
 Dir
 for f in /$SOURCE/\@appstore/*
-do 
+do
 	pkg="${f##*/}"
 	echo $pkg
 	read -p "proceed?(y/n) " pcd
@@ -78,7 +78,7 @@ done
 Start(){
 Dir
 for f in /$TARGET/\@appstore/*
-do 
+do
 	pkg="${f##*/}"
 	echo $pkg
 	read -p "proceed?(y/n) " pcd
@@ -108,10 +108,10 @@ do
 	esac
 done
 
-if [ $SOURCE != 'NONE' ] && [ $TARGET != 'NONE' ] && [ $ALLPKG = 1 ]; then
+if [[ $SOURCE != 'NONE' ]] && [[ $TARGET != 'NONE' ]] && [[ $ALLPKG = 1 ]]; then
 	All
 	Start
-else if [ $SOURCE != 'NONE' ] && [ $TARGET != 'NONE' ]; then
+else if [[ $SOURCE != 'NONE' ]] && [[ $TARGET != 'NONE' ]]; then
 	Run
 	Start
 else
