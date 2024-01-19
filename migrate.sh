@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 Dir(){
- if [ ! -d /$TARGET/\@appstore ]; then
-   mkdir -p /$TARGET/\@appstore
+ if [ ! -d /"$TARGET"/\@appstore ]; then
+   mkdir -p /"$TARGET"/\@appstore
  fi
 }
 Help(){
@@ -13,77 +13,77 @@ Help(){
 }
 All(){
 Dir
-for f in /$SOURCE/\@appstore/*
-do 
+for f in /"$SOURCE"/\@appstore/*
+do
 	pkg="${f##*/}"
-	echo $pkg
-	[ -e /var/packages/$pkg/scripts/start-stop-status ] && /var/packages/$pkg/scripts/start-stop-status stop &
+	echo "$pkg"
+	[ -e /var/packages/"$pkg"/scripts/start-stop-status ] && /var/packages/"$pkg"/scripts/start-stop-status stop &
 	sleep 5
-	[ -e /var/packages/$pkg/target ] && rm -rf /var/packages/$pkg/target
-	[ -e /var/packages/$pkg/etc ] && rm -rf /var/packages/$pkg/etc
-	[ -e /var/packages/$pkg/home ] && rm -rf /var/packages/$pkg/home
-	[ -e /var/packages/$pkg/tmp ] && rm -rf /var/packages/$pkg/tmp
-	[ -e /var/packages/$pkg/var ] && rm -rf /var/packages/$pkg/var
-	[ -e /$SOURCE/\@appstore/$pkg ] && mv /$SOURCE/\@appstore/$pkg /$TARGET/\@appstore && ln -s /$TARGET/\@appstore/$pkg /var/packages/$pkg/target
-	[ -e /$SOURCE/\@appconf/$pkg ] && mv /$SOURCE/\@appconf/$pkg /$TARGET/\@appconf && ln -s /$TARGET/\@appconf/$pkg /var/packages/$pkg/etc
-	[ -e /$SOURCE/\@apphome/$pkg ] && mv /$SOURCE/\@apphome/$pkg /$TARGET/\@apphome && ln -s /$TARGET/\@apphome/$pkg /var/packages/$pkg/home
-	[ -e /$SOURCE/\@apptemp/$pkg ] && mv /$SOURCE/\@apptemp/$pkg /$TARGET/\@apptemp && ln -s /$TARGET/\@apptemp/$pkg /var/packages/$pkg/tmp
-	[ -e /$SOURCE/\@appdata/$pkg ] && mv /$SOURCE/\@appdata/$pkg /$TARGET/\@appdata && ln -s /$TARGET/\@appdata/$pkg /var/packages/$pkg/var
+	[ -e /var/packages/"$pkg"/target ] && rm -rf /var/packages/"$pkg"/target
+	[ -e /var/packages/"$pkg"/etc ] && rm -rf /var/packages/"$pkg"/etc
+	[ -e /var/packages/"$pkg"/home ] && rm -rf /var/packages/"$pkg"/home
+	[ -e /var/packages/"$pkg"/tmp ] && rm -rf /var/packages/"$pkg"/tmp
+	[ -e /var/packages/"$pkg"/var ] && rm -rf /var/packages/"$pkg"/var
+	[ -e /"$SOURCE"/\@appstore/"$pkg" ] && mv /"$SOURCE"/\@appstore/"$pkg" /"$TARGET"/\@appstore && ln -s /"$TARGET"/\@appstore/"$pkg" /var/packages/"$pkg"/target
+	[ -e /"$SOURCE"/\@appconf/"$pkg" ] && mv /"$SOURCE"/\@appconf/"$pkg" /"$TARGET"/\@appconf && ln -s /"$TARGET"/\@appconf/"$pkg" /var/packages/"$pkg"/etc
+	[ -e /"$SOURCE"/\@apphome/"$pkg" ] && mv /"$SOURCE"/\@apphome/"$pkg" /"$TARGET"/\@apphome && ln -s /"$TARGET"/\@apphome/"$pkg" /var/packages/"$pkg"/home
+	[ -e /"$SOURCE"/\@apptemp/"$pkg" ] && mv /"$SOURCE"/\@apptemp/"$pkg" /"$TARGET"/\@apptemp && ln -s /"$TARGET"/\@apptemp/"$pkg" /var/packages/"$pkg"/tmp
+	[ -e /"$SOURCE"/\@appdata/"$pkg" ] && mv /"$SOURCE"/\@appdata/"$pkg" /"$TARGET"/\@appdata && ln -s /"$TARGET"/\@appdata/"$pkg" /var/packages/"$pkg"/var
 done
-	mv /$SOURCE/\@appstore/* /$TARGET/\@appstore
-	mv /$SOURCE/\@appconf/* /$TARGET/\@appconf
-	mv /$SOURCE/\@apphome/* /$TARGET/\@apphome
-	mv /$SOURCE/\@apptemp/* /$TARGET/\@apptemp
-	mv /$SOURCE/\@appdata/* /$TARGET/\@appdata
+	mv /"$SOURCE"/\@appstore/* /"$TARGET"/\@appstore
+	mv /"$SOURCE"/\@appconf/* /"$TARGET"/\@appconf
+	mv /"$SOURCE"/\@apphome/* /"$TARGET"/\@apphome
+	mv /"$SOURCE"/\@apptemp/* /"$TARGET"/\@apptemp
+	mv /"$SOURCE"/\@appdata/* /"$TARGET"/\@appdata
 
-for f in /$TARGET/\@appstore/*
-do 
+for f in /"$TARGET"/\@appstore/*
+do
 	pkg="${f##*/}"
-	echo $pkg
-	[ -e /$TARGET/\@appstore/$pkg ] && ln -sf /$TARGET/\@appstore/$pkg /var/packages/$pkg/target
-	[ -e /$TARGET/\@appconf/$pkg ] && ln -sf /$TARGET/\@appconf/$pkg /var/packages/$pkg/etc
-	[ -e /$TARGET/\@apphome/$pkg ] && ln -sf /$TARGET/\@apphome/$pkg /var/packages/$pkg/home
-	[ -e /$TARGET/\@apptemp/$pkg ] && ln -sf /$TARGET/\@apptemp/$pkg /var/packages/$pkg/tmp
-	[ -e /$TARGET/\@appdata/$pkg ] && ln -sf /$TARGET/\@appdata/$pkg /var/packages/$pkg/var
+	echo "$pkg"
+	[ -e /"$TARGET"/\@appstore/"$pkg" ] && ln -sf /"$TARGET"/\@appstore/"$pkg" /var/packages/"$pkg"/target
+	[ -e /"$TARGET"/\@appconf/"$pkg" ] && ln -sf /"$TARGET"/\@appconf/"$pkg" /var/packages/"$pkg"/etc
+	[ -e /"$TARGET"/\@apphome/"$pkg" ] && ln -sf /"$TARGET"/\@apphome/"$pkg" /var/packages/"$pkg"/home
+	[ -e /"$TARGET"/\@apptemp/"$pkg" ] && ln -sf /"$TARGET"/\@apptemp/"$pkg" /var/packages/"$pkg"/tmp
+	[ -e /"$TARGET"/\@appdata/"$pkg" ] && ln -sf /"$TARGET"/\@appdata/"$pkg" /var/packages/"$pkg"/var
 done
 exit 1
 }
 
 Run(){
 Dir
-for f in /$SOURCE/\@appstore/*
-do 
+for f in /"$SOURCE"/\@appstore/*
+do
 	pkg="${f##*/}"
-	echo $pkg
+	echo "$pkg"
 	read -p "proceed?(y/n) " pcd
 	if [ "$pcd" == "y" ]; then
-		[ -e /var/packages/$pkg/scripts/start-stop-status ] && /var/packages/$pkg/scripts/start-stop-status stop &
+		[ -e /var/packages/"$pkg"/scripts/start-stop-status ] && /var/packages/"$pkg"/scripts/start-stop-status stop &
 		sleep 5
-		[ -e /var/packages/$pkg/target ] && rm -rf /var/packages/$pkg/target
-		[ -e /var/packages/$pkg/etc ] && rm -rf /var/packages/$pkg/etc
-		[ -e /var/packages/$pkg/home ] && rm -rf /var/packages/$pkg/home
-		[ -e /var/packages/$pkg/tmp ] && rm -rf /var/packages/$pkg/tmp
-		[ -e /var/packages/$pkg/var ] && rm -rf /var/packages/$pkg/var
-		[ -e /$SOURCE/\@appstore/$pkg ] && mv /$SOURCE/\@appstore/$pkg /$TARGET/\@appstore && ln -s /$TARGET/\@appstore/$pkg /var/packages/$pkg/target
-		[ -e /$SOURCE/\@appconf/$pkg ] && mv /$SOURCE/\@appconf/$pkg /$TARGET/\@appconf && ln -s /$TARGET/\@appconf/$pkg /var/packages/$pkg/etc
-		[ -e /$SOURCE/\@apphome/$pkg ] && mv /$SOURCE/\@apphome/$pkg /$TARGET/\@apphome && ln -s /$TARGET/\@apphome/$pkg /var/packages/$pkg/home
-		[ -e /$SOURCE/\@apptemp/$pkg ] && mv /$SOURCE/\@apptemp/$pkg /$TARGET/\@apptemp && ln -s /$TARGET/\@apptemp/$pkg /var/packages/$pkg/tmp
-		[ -e /$SOURCE/\@appdata/$pkg ] && mv /$SOURCE/\@appdata/$pkg /$TARGET/\@appdata && ln -s /$TARGET/\@appdata/$pkg /var/packages/$pkg/var
-		ls -l /var/packages/$pkg
-		[ -e /var/packages/$pkg/scripts/start-stop-status ] && /var/packages/$pkg/scripts/start-stop-status start &
+		[ -e /var/packages/"$pkg"/target ] && rm -rf /var/packages/"$pkg"/target
+		[ -e /var/packages/"$pkg"/etc ] && rm -rf /var/packages/"$pkg"/etc
+		[ -e /var/packages/"$pkg"/home ] && rm -rf /var/packages/"$pkg"/home
+		[ -e /var/packages/"$pkg"/tmp ] && rm -rf /var/packages/"$pkg"/tmp
+		[ -e /var/packages/"$pkg"/var ] && rm -rf /var/packages/"$pkg"/var
+		[ -e /"$SOURCE"/\@appstore/"$pkg" ] && mv /"$SOURCE"/\@appstore/"$pkg" /"$TARGET"/\@appstore && ln -s /"$TARGET"/\@appstore/"$pkg" /var/packages/"$pkg"/target
+		[ -e /"$SOURCE"/\@appconf/"$pkg" ] && mv /"$SOURCE"/\@appconf/"$pkg" /"$TARGET"/\@appconf && ln -s /"$TARGET"/\@appconf/"$pkg" /var/packages/"$pkg"/etc
+		[ -e /"$SOURCE"/\@apphome/"$pkg" ] && mv /"$SOURCE"/\@apphome/"$pkg" /"$TARGET"/\@apphome && ln -s /"$TARGET"/\@apphome/"$pkg" /var/packages/"$pkg"/home
+		[ -e /"$SOURCE"/\@apptemp/"$pkg" ] && mv /"$SOURCE"/\@apptemp/"$pkg" /"$TARGET"/\@apptemp && ln -s /"$TARGET"/\@apptemp/"$pkg" /var/packages/"$pkg"/tmp
+		[ -e /"$SOURCE"/\@appdata/"$pkg" ] && mv /"$SOURCE"/\@appdata/"$pkg" /"$TARGET"/\@appdata && ln -s /"$TARGET"/\@appdata/"$pkg" /var/packages/"$pkg"/var
+		ls -l /var/packages/"$pkg"
+		[ -e /var/packages/"$pkg"/scripts/start-stop-status ] && /var/packages/"$pkg"/scripts/start-stop-status start &
 	fi
 done
 }
 
 Start(){
 Dir
-for f in /$TARGET/\@appstore/*
-do 
+for f in /"$TARGET"/\@appstore/*
+do
 	pkg="${f##*/}"
-	echo $pkg
+	echo "$pkg"
 	read -p "proceed?(y/n) " pcd
 	if [ "$pcd" == "y" ]; then
-		[ -e /var/packages/$pkg/scripts/start-stop-status ] && /var/packages/$pkg/scripts/start-stop-status start &
+		[ -e /var/packages/"$pkg"/scripts/start-stop-status ] && /var/packages/"$pkg"/scripts/start-stop-status start &
 		sleep 5
 	fi
 done
@@ -108,10 +108,10 @@ do
 	esac
 done
 
-if [ $SOURCE != 'NONE' ] && [ $TARGET != 'NONE' ] && [ $ALLPKG = 1 ]; then
+if [[ "$SOURCE" != 'NONE' ]] && [[ "$TARGET" != 'NONE' ]] && [[ $ALLPKG = 1 ]]; then
 	All
 	Start
-else if [ $SOURCE != 'NONE' ] && [ $TARGET != 'NONE' ]; then
+else if [[ "$SOURCE" != 'NONE' ]] && [[ "$TARGET" != 'NONE' ]]; then
 	Run
 	Start
 else
